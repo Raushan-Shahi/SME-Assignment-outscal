@@ -17,7 +17,7 @@ namespace Enemy
         float horizontal_movement_speed = 200.0f;
 
         float rate_of_fire = 3.f;
-        float elapsed_fire_duration = 0.f;
+        float elapsed_fire_duration = 1.f;
 
         int reward = 1;
 

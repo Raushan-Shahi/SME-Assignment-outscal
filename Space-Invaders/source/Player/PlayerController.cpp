@@ -200,8 +200,8 @@ namespace Player
 		if (event_service->pressedRightArrowKey() || event_service->pressedDKey()) 
 			moveRight();
 
-		//if (event_service->pressedLeftMouseButton()) 
-		//	processBulletFire();
+		if (event_service->pressedLeftMouseButton()) 
+			processBulletFire();
 	}
 
 	void PlayerController::moveLeft()
@@ -255,6 +255,24 @@ namespace Player
 			current_high_score.player_name = "Outscal";
 			current_high_score.score = PlayerModel::player_score;
 			HighScore::saveHighScore(current_high_score);
+		}
+	}
+	void PlayerController::processBulletFire()
+	{
+		// Check if enough time has passed since the last bullet was fired
+		// (to prevent firing too rapidly)
+		if (elapsed_fire_duration <= 0)
+		{
+			// Spawn bullet(s) here using your BulletManager or other method
+			// Example:
+			// bullet_manager->spawnBullet(player_model->getPlayerPosition(), BulletType::NORMAL);
+
+			// Reset the fire cooldown duration
+			elapsed_fire_duration = player_model->fire_cooldown_duration;
+
+			// Spawn powerup at the player's position
+			ServiceLocator::getInstance()->getPowerupService()->spawnPowerup(
+				Powerup::PowerupType::RAPID_FIRE, player_model->getPlayerPosition());
 		}
 	}
 }
