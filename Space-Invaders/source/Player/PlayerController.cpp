@@ -257,10 +257,17 @@ namespace Player
 			HighScore::saveHighScore(current_high_score);
 		}
 	}
+
+	void PlayerController::render()
+	{
+		player_view->render();
+	}
 	void PlayerController::processBulletFire()
 	{
 		// Check if enough time has passed since the last bullet was fired
 		// (to prevent firing too rapidly)
+		player_model->setRapidFireState(true);
+		player_model->isRapidFireEnabled();
 		if (elapsed_fire_duration <= 0)
 		{
 			// Spawn bullet(s) here using your BulletManager or other method
@@ -275,4 +282,5 @@ namespace Player
 				Powerup::PowerupType::RAPID_FIRE, player_model->getPlayerPosition());
 		}
 	}
+
 }
