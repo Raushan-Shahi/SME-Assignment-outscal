@@ -7,6 +7,9 @@
 
 namespace Player
 {
+    // Change for Task 2:
+    // The objects player_view and player_model was initialised in the line 25,26.
+    // BUt the class was not included in this file. So, included these two classes.
     class PlayerModel;
     class PlayerView;
     class PlayerController : public Collision::ICollider
@@ -25,6 +28,9 @@ namespace Player
         void processPlayerInput();
         void moveLeft();
         void moveRight();
+        // Change for part 3: 
+        // This function will be called for the event left mouse click. 
+        // This porcess the bullet fire and handles powerups
         void processBulletFire();
 
         bool processPowerupCollision(ICollider* other_collider);

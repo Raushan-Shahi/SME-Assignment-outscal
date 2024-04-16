@@ -10,6 +10,11 @@
 #include "../../header/Main/GameService.h"
 #include "../../header/Gameplay/HighScore.h"
 
+// Change for task 3:
+// The enum class from Header-> Particle -> ParticleService.h was to be called 
+// for the processBulletFire() function. It was defined with the Particle namespace.
+using namespace Particle;
+
 namespace Player
 {
 	using namespace Global;
@@ -200,6 +205,9 @@ namespace Player
 		if (event_service->pressedRightArrowKey() || event_service->pressedDKey()) 
 			moveRight();
 
+		// Change for Task 3:
+		// The left mouse click input from user -> fires bullet. 
+		// So, The event service (leftMouseButton) calls the function processBulletfire.
 		if (event_service->pressedLeftMouseButton()) 
 			processBulletFire();
 	}
@@ -258,29 +266,33 @@ namespace Player
 		}
 	}
 
-	void PlayerController::render()
-	{
-		player_view->render();
-	}
+	// Change for Task 3:
+	// The processBulletFire() function is defined below
 	void PlayerController::processBulletFire()
 	{
-		// Check if enough time has passed since the last bullet was fired
-		// (to prevent firing too rapidly)
-		player_model->setRapidFireState(true);
-		player_model->isRapidFireEnabled();
-		if (elapsed_fire_duration <= 0)
-		{
-			// Spawn bullet(s) here using your BulletManager or other method
-			// Example:
-			// bullet_manager->spawnBullet(player_model->getPlayerPosition(), BulletType::NORMAL);
+		// This calls the playSound Function which plays the sound of Bullet fire on each left Mouse Click.
+		// This is the line 152 from the Global -> ServiceLocator.cpp file
+		// This basically calls all the required functions globally to ease the access of the functions.
+		ServiceLocator::getInstance()->getSoundService()->playSound(SoundType::BULLET_FIRE);
 
-			// Reset the fire cooldown duration
-			elapsed_fire_duration = player_model->fire_cooldown_duration;
+		// We need the current position of the player to determine the initial position of the bullet.
+		sf::Vector2f currentPosition = player_model->getPlayerPosition();
 
-			// Spawn powerup at the player's position
-			ServiceLocator::getInstance()->getPowerupService()->spawnPowerup(
-				Powerup::PowerupType::RAPID_FIRE, player_model->getPlayerPosition());
-		}
+		// In the PlayerModel.h (header file) a bullet offset is defined.  Line 42
+		// so, the exact location of the bullet is current position + bullet_offset
+		sf::Vector2f bulletPosition = currentPosition + player_model->barrel_position_offset;
+
+		// Particle type is required to call the function spawnParticleSystem().
+		// So, this is retrived from the namespace of ParticleService.h (headerfile)
+		ParticlesType particleType = ParticlesType::EXPLOSION;
+
+		// The ServiceLocator.cpp calls the getParticleService() which further calls the spawnParticleSystem()
+		// This calls the Bullet at the initial point
+		ServiceLocator::getInstance()->getParticleService()->spawnParticleSystem(bulletPosition, particleType);
+
+
+		// Further we need to define a vector of bullets.
+		// In a for loop check for the boundary conditions and pop elements from the vector
+		// Define a Bullet speed and and this will modify the position of bullet with time lapsed
 	}
-
 }
