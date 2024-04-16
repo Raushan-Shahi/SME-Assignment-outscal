@@ -10,12 +10,15 @@ To find all the bugs and enable the game to run
     Then the next step was to add the SFML 2.6.1 files to my project following the setup guide.
 
 #### Part 2 - Bug Fixing
+    - Executed in approx **10** minutes.
     - In this step, I had to find a deliberate bug in the code, that was preventing the game to run. 
     - The bug was in space invasion -> header -> Player -> PlayerController.h
     -To solve the bug we just had to define the two class **"class PlayerModel; " and "class PlayerView;"**. 
     -This was done because the file was accesssing these two classes without definiing them in the file.
 
 #### Part 3 – Small Improvements 
+    - Executed in approx 1 hour.
+    - spent approximately 2hour on further research and exploration.
     - In this step, I was supposed to add the processBuletfire() function to the PLayerController.cpp
     - The Event Left mouse Click demands a bullet fire.
     - A function processBulletFire() was defined under PlayerController.h file and Playercontroller.cpp
